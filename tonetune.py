@@ -1,8 +1,7 @@
 import streamlit as st
 import openai
-import os
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.title("ToneTune AI - Tone Changer")
 
@@ -16,8 +15,8 @@ if st.button("Rewrite Tone"):
         st.warning("Please enter a message to rewrite.")
     else:
         prompt = f"""You are a tone coach. Rewrite the following message in a more {tone} tone:\nMessage: "{text_input}"\nNew version:"""
-        response = openai.Completion.create(
-            engine="text-davinci-003",
+        response = client.completions.create(
+            model="gpt-3.5-turbo-instruct",
             prompt=prompt,
             temperature=0.7,
             max_tokens=200
